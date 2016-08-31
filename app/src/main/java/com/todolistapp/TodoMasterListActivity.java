@@ -50,9 +50,6 @@ public class TodoMasterListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-
                 //Dialog box to add a new List
                 final EditText taskEditText = new EditText(TodoMasterListActivity.this);
                 AlertDialog dialog = new AlertDialog.Builder(TodoMasterListActivity.this)
@@ -62,12 +59,12 @@ public class TodoMasterListActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String listName = String.valueOf(taskEditText.getText());
-                                // Log.d(TAG, "Task to add: " + task);
                                 ToDoList item = new ToDoList(java.util.UUID.randomUUID().toString(), listName, new ArrayList());
+
                                 MasterList.getInstance().addItem(item);
                                 MasterList.getInstance().Save(getApplicationContext());
 
-                                View recyclerView = findViewById(R.id.todolist_list);
+                                View recyclerView = findViewById(R.id.todo_master_list);
                                 setupRecyclerView((RecyclerView) recyclerView);
                             }
                         })
@@ -80,7 +77,7 @@ public class TodoMasterListActivity extends AppCompatActivity {
         // Load data
         MasterList.getInstance().Load(getApplicationContext());
 
-        View recyclerView = findViewById(R.id.todolist_list);
+        View recyclerView = findViewById(R.id.todo_master_list);
         setupRecyclerView((RecyclerView) recyclerView);
 
         if (findViewById(R.id.todolist_detail_container) != null) {
@@ -93,30 +90,34 @@ public class TodoMasterListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(MasterList.getInstance().GetList()));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(MasterList.getInstance().GetLists()));
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<ToDoList> mValues;
+        private final List<ToDoList> toDoLists;
 
         public SimpleItemRecyclerViewAdapter(List<ToDoList> items) {
-            mValues = items;
+            toDoLists = items;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.todolist_list_content, parent, false);
+                    .inflate(R.layout.todo_master_list_content, parent, false);
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(/* mValues.get(position).id */ "*");
-            holder.mContentView.setText(mValues.get(position).title);
+            holder.mItem = toDoLists.get(position);
+            holder.mContentView.setText(toDoLists.get(position).title);
+            String description = String.format(
+                    "%1$s/%2$s tasks completed.",
+                    toDoLists.get(position).GetCompletedTaskCount(),
+                    toDoLists.get(position).GetTaskCount());
+            holder.descriptionView.setText(description);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -142,20 +143,21 @@ public class TodoMasterListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return toDoLists.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final TextView mIdView;
             public final TextView mContentView;
+            public final TextView descriptionView;
+
             public ToDoList mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.name);
+                descriptionView = (TextView) view.findViewById(R.id.description);
             }
 
             @Override

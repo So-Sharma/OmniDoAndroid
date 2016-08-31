@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.todolistapp.dummy.MasterList;
-import com.todolistapp.dummy.ToDoItem;
+import com.todolistapp.dummy.ToDoTask;
 
 /**
  * An activity representing a single Todo List detail screen. This
@@ -29,7 +29,8 @@ public class TodoListDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todolist_detail);
+        setContentView(R.layout.activity_todo_list_detail);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,8 +38,6 @@ public class TodoListDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
 
                 //Dialog box to add a new List
                 final EditText taskEditText = new EditText(TodoListDetailActivity.this);
@@ -50,11 +49,10 @@ public class TodoListDetailActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 String listItem = String.valueOf(taskEditText.getText());
 
-                                // TODO: Saurabh
                                 Bundle arguments = new Bundle();
                                 String key = getIntent().getStringExtra(TodoListDetailFragment.ARG_ITEM_ID);
 
-                                MasterList.getInstance().ITEM_MAP.get(key).ITEMS.add(new ToDoItem("0", listItem, false));
+                                MasterList.getInstance().toDoListMap.get(key).AddTask(listItem);
                                 MasterList.getInstance().Save(getApplicationContext());
 
                                 arguments.putString(TodoListDetailFragment.ARG_ITEM_ID, key);
@@ -67,7 +65,7 @@ public class TodoListDetailActivity extends AppCompatActivity {
                                         .replace(R.id.todolist_detail_container, fragment)
                                         .commit();
 
-                                /*View recyclerView = findViewById(R.id.todolist_list);
+                                /*View recyclerView = findViewById(R.id.todo_master_list);
                                 assert recyclerView != null;
                                 setupRecyclerView((RecyclerView) recyclerView);*/
                             }
@@ -124,56 +122,4 @@ public class TodoListDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(MasterList.ITEMS));
-    }
-
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        private final List<MasterList.ToDoItem> mValues;
-
-        public SimpleItemRecyclerViewAdapter(List<MasterList.ToDoItem> items) {
-            mValues = items;
-        }
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.todolist_list_content, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).title);
-        }
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public MasterList.ToDoItem mItem;
-
-            public ViewHolder(View view) {
-                super(view);
-                mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.title);
-            }
-
-            @Override
-            public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
-            }
-        }
-
-    }*/
-
-
 }

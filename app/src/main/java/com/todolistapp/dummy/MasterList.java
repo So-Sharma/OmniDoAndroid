@@ -18,73 +18,57 @@ import java.util.Map;
  */
 
 public class MasterList {
-    //public static final List<ToDoList> ITEMS = new ArrayList<ToDoList>();
-    public Map<String, ToDoList> ITEM_MAP;
-
-    private static final int COUNT = 0;
-    public static final String MASTER_LIST = "master_list";
+    private static final String MasterListName = "master_list";
 
     private static MasterList masterList;
 
+    private static Object lock = new Object();
+
+    public Map<String, ToDoList> toDoListMap;
+
     public static MasterList getInstance() {
-        if (masterList == null) {
-            // TODO: Lock
-            masterList = new MasterList();
+
+        synchronized (lock) {
+            if (masterList == null) {
+                // TODO: Lock
+                masterList = new MasterList();
+            }
         }
 
         return masterList;
     }
 
     public MasterList() {
-        ITEM_MAP = new HashMap<String, ToDoList>();
+        toDoListMap = new HashMap<>();
     }
 
     public void addItem(ToDoList item) {
-        //ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        toDoListMap.put(item.id, item);
     }
 
     public void Save(Context context) {
         Gson gson = new Gson();
         String serializedMap = gson.toJson(this);
-        SharedPreferences preferences = context.getSharedPreferences(MASTER_LIST, Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(MasterListName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(MASTER_LIST, serializedMap);
+        editor.putString(MasterListName, serializedMap);
         editor.commit();
     }
 
     public void Load(Context context) {
-        SharedPreferences pref = context.getSharedPreferences(MASTER_LIST, Context.MODE_PRIVATE);
-        String serializedMap = pref.getString(MASTER_LIST, null);
+        SharedPreferences pref = context.getSharedPreferences(MasterListName, Context.MODE_PRIVATE);
+        String serializedMap = pref.getString(MasterListName, null);
 
         if (serializedMap == null) {
             return;
         }
 
         Gson gson = new Gson();
-        this.ITEM_MAP = gson.fromJson(serializedMap, this.getClass()).ITEM_MAP;
+        this.toDoListMap = gson.fromJson(serializedMap, this.getClass()).toDoListMap;
     }
 
-    private static ToDoList createDummyItem(int position) {
-        List aList = new ArrayList();
-        ToDoItem d1 = new ToDoItem("1", "title", true);
-        ToDoItem d2 = new ToDoItem("2", "title", false);
-        aList.add(d1);
-        aList.add(d2);
-        return new ToDoList(String.valueOf(position), "Item " + position, (ArrayList) aList);
-    }
-
-    public List<ToDoList> GetList() {
-
-        ArrayList<ToDoList> items = new ArrayList<ToDoList>();
-
-        int count = 0;
-
-        for (ToDoList todoList : ITEM_MAP.values()) {
-            items.add(count++, todoList);
-        }
-
-        return items;
+    public List<ToDoList> GetLists() {
+        return new ArrayList<>(toDoListMap.values());
     }
 }
 
