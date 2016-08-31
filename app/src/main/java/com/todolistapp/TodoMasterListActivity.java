@@ -52,6 +52,7 @@ public class TodoMasterListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Dialog box to add a new List
                 final EditText taskEditText = new EditText(TodoMasterListActivity.this);
+
                 AlertDialog dialog = new AlertDialog.Builder(TodoMasterListActivity.this)
                         .setTitle("Add a new to-do list")
                         .setView(taskEditText)
@@ -113,12 +114,24 @@ public class TodoMasterListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = toDoLists.get(position);
             holder.mContentView.setText(toDoLists.get(position).title);
-            String description = String.format(
-                    "%1$s/%2$s tasks completed.",
-                    toDoLists.get(position).GetCompletedTaskCount(),
-                    toDoLists.get(position).GetTaskCount());
-            holder.descriptionView.setText(description);
 
+            String description;
+
+            int completedTaskCount = toDoLists.get(position).GetCompletedTaskCount();
+            int totalTaskCount = toDoLists.get(position).GetTaskCount();
+
+            if (totalTaskCount == 0) {
+                description = String.format("No tasks found!");
+            } else if (completedTaskCount == totalTaskCount) {
+                description = String.format("Yay! All tasks (%1s) completed.", totalTaskCount);
+            } else {
+                description = String.format(
+                        "%1$s/%2$s tasks completed.",
+                        completedTaskCount,
+                        totalTaskCount);
+            }
+
+            holder.descriptionView.setText(description);
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

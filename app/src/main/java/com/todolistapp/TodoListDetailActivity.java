@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.todolistapp.dummy.MasterList;
-import com.todolistapp.dummy.ToDoTask;
 
 /**
  * An activity representing a single Todo List detail screen. This
@@ -23,8 +22,6 @@ import com.todolistapp.dummy.ToDoTask;
  * in a {@link TodoMasterListActivity}.
  */
 public class TodoListDetailActivity extends AppCompatActivity {
-
-    //TodoListDetailFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +61,6 @@ public class TodoListDetailActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction()
                                         .replace(R.id.todolist_detail_container, fragment)
                                         .commit();
-
-                                /*View recyclerView = findViewById(R.id.todo_master_list);
-                                assert recyclerView != null;
-                                setupRecyclerView((RecyclerView) recyclerView);*/
                             }
                         })
                         .setNegativeButton("Cancel", null)

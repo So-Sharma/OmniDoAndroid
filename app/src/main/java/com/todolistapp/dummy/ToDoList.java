@@ -22,6 +22,10 @@ public class ToDoList {
         return toDoTasks.get(position).title;
     }
 
+    public String GetTaskId(int position) {
+        return toDoTasks.get(position).id;
+    }
+
     public int GetTaskCount() {
         return toDoTasks.size();
     }
@@ -40,5 +44,15 @@ public class ToDoList {
 
     public boolean GetTaskChecked(int position) {
         return toDoTasks.get(position).selected;
+    }
+
+    public ToDoTask GetTask(String tag) {
+        for (ToDoTask todoTask : toDoTasks) {
+            if (tag == todoTask.id) {
+                return todoTask;
+            }
+        }
+
+        return null;
     }
 }

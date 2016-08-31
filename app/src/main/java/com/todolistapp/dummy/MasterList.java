@@ -10,13 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Helper class for providing sample title for user interfaces created by
- * Android template wizards.
- * <p/>
- * TODO: Replace all uses of this class before publishing your app.
- */
-
 public class MasterList {
     private static final String MasterListName = "master_list";
 
@@ -30,7 +23,6 @@ public class MasterList {
 
         synchronized (lock) {
             if (masterList == null) {
-                // TODO: Lock
                 masterList = new MasterList();
             }
         }

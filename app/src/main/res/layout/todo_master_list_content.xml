@@ -22,12 +22,12 @@
         android:layout_below="@+id/name"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="@dimen/master_list_description_font_size"
-        android:textColor="@color/abc_secondary_text_material_light" />
+        android:textColor="@color/colorAccent" />
 
     <View
         android:layout_below="@+id/description"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@color/colorAccent" />
+        android:background="@color/colorAccentLight" />
 
 </RelativeLayout>

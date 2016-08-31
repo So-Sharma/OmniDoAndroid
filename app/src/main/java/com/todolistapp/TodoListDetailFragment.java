@@ -1,9 +1,9 @@
 package com.todolistapp;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +13,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.todolistapp.dummy.MasterList;
-import com.todolistapp.dummy.ToDoTask;
 import com.todolistapp.dummy.ToDoList;
+import com.todolistapp.dummy.ToDoTask;
 
 /**
  * A fragment representing a single Todo List detail screen.
@@ -81,12 +81,27 @@ public class TodoListDetailFragment extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.todo_list_detail_content, parent, false);
+
+            CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    final CheckBox checkbox = (CheckBox) v;
+
+                    toDoList.GetTask((String) checkbox.getTag()).selected = checkbox.isChecked();
+                    MasterList.getInstance().Save(getActivity().getApplicationContext());
+                }
+            });
+
             return new ViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.name.setText(toDoList.GetTaskTitle(position));
+
+            holder.checkBox.setTag(toDoList.GetTaskId(position));
             holder.checkBox.setChecked(toDoList.GetTaskChecked(position));
         }
 
