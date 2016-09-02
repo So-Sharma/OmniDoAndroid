@@ -22,9 +22,7 @@
         android:textSize="@dimen/list_detail_name_font_size"/>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/name"
-        android:background="@color/colorAccentLight" />
+        android:layout_below="@id/name"
+        style="@style/Divider" />
 
 </RelativeLayout>

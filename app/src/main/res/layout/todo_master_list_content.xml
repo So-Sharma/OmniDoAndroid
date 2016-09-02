@@ -25,9 +25,8 @@
         android:textColor="@color/colorAccent" />
 
     <View
-        android:layout_below="@+id/description"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorAccentLight" />
+        android:layout_below="@id/description"
+        style="@style/Divider" />
+
 
 </RelativeLayout>

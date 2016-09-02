@@ -40,17 +40,19 @@ public class TodoListDetailFragment extends Fragment {
         }
 
         toDoList = MasterList.getInstance().toDoListMap.get(getArguments().getString(ARG_ITEM_ID));
-
-        Activity activity = this.getActivity();
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-        if (appBarLayout != null) {
-            appBarLayout.setTitle(getTitle());
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Activity activity = this.getActivity();
+
+        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+
+        if (appBarLayout != null) {
+            appBarLayout.setTitle(getTitle());
+        }
+
         View rootView = inflater.inflate(R.layout.todo_list_detail, container, false);
 
         View recyclerView = rootView.findViewById(R.id.todo_list_detail);
