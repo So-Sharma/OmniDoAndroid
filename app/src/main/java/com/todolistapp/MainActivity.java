@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: Splash screen doesn't require setting up view
-        //setContentView(R.layout.activity_main);
+
+        // Note: Splash screen doesn't require setting up view
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());

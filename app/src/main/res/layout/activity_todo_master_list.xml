@@ -17,7 +17,22 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:src="@drawable/more"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:contentDescription="@string/more"
+                android:background="@color/colorPrimary"
+                android:onClick="showPopup" />
+
+        </android.support.v7.widget.Toolbar>
+
 
     </android.support.design.widget.AppBarLayout>
 
@@ -28,6 +43,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include layout="@layout/todo_master_list" />
+
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton

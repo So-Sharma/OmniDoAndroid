@@ -21,14 +21,13 @@
         </activity>
         <activity
             android:name=".WelcomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TodoMasterListActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TodoListDetailActivity"
-            android:label="@string/title_todolist_detail"
             android:parentActivityName=".TodoMasterListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

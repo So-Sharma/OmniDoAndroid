@@ -8,14 +8,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.digits.sdk.android.Digits;
+import com.digits.sdk.android.DigitsSession;
 import com.todolistapp.dummy.MasterList;
 import com.todolistapp.dummy.ToDoList;
 
@@ -94,6 +100,31 @@ public class TodoMasterListActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(MasterList.getInstance().GetLists()));
     }
 
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.popup_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(
+                new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Handle item selection
+                        switch (item.getItemId()) {
+                            case R.id.settings:
+                                return true;
+                            case R.id.signout:
+                                Digits.clearActiveSession();
+                                Toast.makeText(getApplicationContext(),
+                                        "You have been logged out. Please restart the application.",
+                                        Toast.LENGTH_LONG).show();
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
+
+        popup.show();
+    }
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
@@ -121,7 +152,7 @@ public class TodoMasterListActivity extends AppCompatActivity {
             int totalTaskCount = toDoLists.get(position).GetTaskCount();
 
             if (totalTaskCount == 0) {
-                description = String.format("No tasks found!");
+                description = "No tasks found!";
             } else if (completedTaskCount == totalTaskCount) {
                 description = String.format("Yay! All tasks (%1s) completed.", totalTaskCount);
             } else {
